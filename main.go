@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type people interface {
 	average()
@@ -12,35 +15,19 @@ type student struct {
 }
 
 func (s *student) average() {
-	if s != nil {
-		*&s.avg = (s.cal1 + s.cal2 + s.cal3) / 3
+	s.avg = (s.cal1 + s.cal2 + s.cal3) / 3
+}
+
+func printPeople(p people) {
+	if !(p == nil || reflect.ValueOf(p).IsNil()) {
+		p.average()
 	}
-}
-
-func printPeople(p people, i inter) {
-	if i == nil {
-		people.average(p)
-		fmt.Printf("(%v, %T)\n", p, p)
-	}
-}
-
-type inter interface {
-	method()
-}
-
-func describe(i inter) {
-	fmt.Printf("(%v, %T)\n", i, i)
+	fmt.Printf("(%v, %T)\n", p, p)
 }
 
 func main() {
 	var t *student
 	var p people = t
-	var i inter
-
-	printPeople(&student{name: "Ana Gomez", cal1: 9, cal2: 10, cal3: 10}, i)
-
-	printPeople(p, i)
-	describe(i)
-	i.method()
-
+	printPeople(&student{name: "Ana Gomez", cal1: 9, cal2: 10, cal3: 10})
+	printPeople(p)
 }
